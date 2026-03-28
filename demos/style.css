@@ -1,0 +1,29 @@
+  .div {
+    width: 100px;
+    height: 100px;
+  }
+  
+  #div1 {
+    background-color: green;
+    position: fixed;
+    left: 20px;
+    top: 20px;
+  }
+    
+  #div2 {
+    background-color: yellow;
+    position: fixed;
+    left: 20px;
+    top: 150px;
+  }
+    
+  #div3 {
+    background-color: red;
+    position: fixed;
+    left: 20px;
+    top: 270px;
+  }
+  
+  #hdiv2 {
+    color : red;
+  }
