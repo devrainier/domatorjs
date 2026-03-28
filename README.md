@@ -35,7 +35,7 @@ This project is built from scratch as a learning-driven framework to understand 
 **DomatorJS** is designed to explore and demonstrate how DOM utilities, event systems, gesture handling, and animation engines can be built from the ground up without relying on large external frameworks.
 ## Installation
 
-1. Download the `domator.js` source code [here](./dist/domator)
+1. Download the `domator.js` source code [here](./dist/domator.js)
 
 2. Include it in your html file:
 
