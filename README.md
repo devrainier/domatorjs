@@ -27,7 +27,7 @@ This project demonstrates how UI libraries can be engineered from the ground up 
 
 ```bash
 
-  dist/domator.js
+dist/domator.js
 
 ```
 
@@ -253,3 +253,4 @@ Animate css | `.animate()`
 ## License 
 
 MIT License
+
