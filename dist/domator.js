@@ -166,6 +166,9 @@
         console.warn('WARNING: Passed arguments on $(arg) is ' + elem);
         console.warn('WARNING: $(arg) selector uses document.querySelectorAll so make sure to add # for id ex: #div1 or . for class ex: .div and just uses document.getElementsByTagName as fallback')
       }
+      else if(isNull(elem)) {
+        console.warn('WARNING: Element is Null')
+      }
       else {
         console.warn('WARNING: No element matches on extended filter from $(arg, filter)')
       }
@@ -494,12 +497,27 @@
     
     each_(arr, func);
     
+    // here we assign _element to arr to go back to the elements we have before .each() cause if we use $(arg) inside .each(), it instanly update the _element
+    
+    _element = arr
+    
     return this;
   }
   
   
-  function filter(arg) {
+  function filter(arg, type) {
     const elem = toArray($(_element));
+    
+    // if type is given, then don't reset the _elem.unfiltered 
+    
+    // cause if we don't reset it, there could be lots of unfiltered elements when calling .not() especially if we use .filter() before as it automatically collects unfiltered elements
+    
+    // also we, don't reset it if type is given, cause it means it's used by extended filtering which filters attributes, css properties and textContent, thus when we call .not() we still have complete list of unfiltered elements
+    
+    if(isNull(type)){
+      _elem.unfiltered = []
+    }
+    
     let res;
     
     if (isFunction(arg)) {
@@ -510,6 +528,7 @@
       const isNodeArray = isArray(node);
       
       res = filter_(elem, x => {
+
         if (isNodeArray) {
           return node.includes(x);
         }
@@ -519,6 +538,7 @@
     }
     
     const { filtered, unfiltered } = res;
+    
     unfiltered.length && _elem.unfiltered.push(unwrapIfSingle(unfiltered));
     
     if (filtered.length) {
@@ -544,8 +564,11 @@
       
     */
     
-    const unfiltered = [];
     let filtered;
+    
+    // empty first _elem.unfiltered 
+    
+    _elem.unfiltered = []
     
     args.forEach(x => {
       filtered = _element;
@@ -632,7 +655,7 @@
         if (reg_attr.test(key)) {
           
           filters.push({
-            ...attr, [key.replace('@', '')] : value
+            ...attr, [key.replace('@', '')]: value
           });
         }
         else {
@@ -706,7 +729,7 @@
         }
         
       }
-    });
+    }, type_in_str);
     
     if (res) {
       return _element;
@@ -815,7 +838,8 @@
     _elem.unfiltered = extractArray([], _elem.unfiltered);
     
     _element = $(_elem.unfiltered)
-    arg.length ? with_(...arg) : 0;
+    
+    _element = _element.length === 0 ? null : _element
     
     _elem.unfiltered = [];
     
