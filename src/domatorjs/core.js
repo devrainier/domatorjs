@@ -737,18 +737,18 @@
     const siblings = _element;
     
     const len = siblings.length - 1;
-    const esc = arg[2] || 1;
+    const esc = (arg[2] || 1) + 1;
     
     let start = siblings.indexOf(main_elem);
     let end = arg[1];
     
-    end = isNode($(end)) ? siblings.indexOf(_element) : end;
+    end = isString(end) && isNode($(end)) ? siblings.indexOf(_element) : end;
+    
     
     if (arg[0] === '+') {
-      --start;
       end = end < 0 ? len : end;
       
-      while (start++ < end) {
+      while (start <= end) {
         
         if (start % esc === 0) {
           resulting_element.push(siblings[start]);
@@ -758,15 +758,15 @@
             _elem.unfiltered.push(siblings[start]);
           }
         }
-        
+      
+        start++
       }
     }
     
     else if (arg[0] === '-') {
-      ++start;
       end = end < 0 ? 0 : end;
       
-      while (start-- > end) {
+      while (start >= end) {
         
         if (start % esc === 0) {
           resulting_element.push(siblings[start]);
@@ -776,11 +776,13 @@
             _elem.unfiltered.push(siblings[start]);
           }
         }
-        
+
+        start--
       }
     }
     
-    _element = resulting_element;
+    
+    _element = resulting_element.length >= 1 ? resulting_element : null;
     
     
     return this;
